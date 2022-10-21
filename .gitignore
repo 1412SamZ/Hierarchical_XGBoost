@@ -1,3 +1,6 @@
 dataset/*
 tmp
 .vscode
+*.db
+*.sh
+*.pkl
