@@ -5,7 +5,7 @@
 #SBATCH --output=tmp/slurm_logs/task1-%j.txt  # Logdatei für den merged STDOUT/STDERR output (%j wird durch slurm job-ID ersetzt)
 #SBATCH --time=1-0                     # Maximale Laufzeit des Jobs, bis Slurm diesen abbricht (HH:MM:SS oder Tage-Stunden)
 #SBATCH --partition=cpu_normal_stud    # Partition auf der gerechnet werden soll (Bei GPU Jobs unbedingt notwendig)
-#SBATCH --cpus-per-task=16
+#SBATCH --cpus-per-task=8
 #SBATCH --mem=40G
 
                                     

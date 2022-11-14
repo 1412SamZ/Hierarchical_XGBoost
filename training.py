@@ -19,8 +19,10 @@ import logging
 from sklearn.model_selection import cross_val_score
 from sklearn.metrics import make_scorer
 import sys
-
-DATA_PATH=sys.argv[1]
+try:
+    DATA_PATH=sys.argv[1]
+except:
+    DATA_PATH = "dataset"
 # Get the input data from SPI and AOI files
 InputSPI=pd.DataFrame()
 for item in range(4):
@@ -59,7 +61,7 @@ spi_training=spi_training.dropna(subset=Num_features)
 for feat in Num_features:
     spi_training[feat]=spi_training[feat].astype('float')
     
-spi_training["ComponentID2"]=spi_training["ComponentID"].astype('category')#.cat.codes
+spi_training["ComponentID2"]=spi_training["ComponentID"].astype('category').cat.codes
 
 Train_df=spi_training.reset_index(drop=True)
 X_train=Train_df
@@ -73,7 +75,7 @@ AE_val.columns=[x+"_encoded" for x in AE_val.columns.tolist()]
 
 # Merge the encoded feature
 Train_df=pd.concat([Train_df,AE_val],axis=1)
-features_x=[x for x in Train_df.columns if "_encoded" in x]
+features_x=['Volume(%)', 'Area(%)','OffsetX(%)', 'OffsetY(%)', 'Shape(um)', 'PosX(mm)', 'PosY(mm)', 'SizeX', 'SizeY', 'ComponentID2_encoded']#[x for x in Train_df.columns if "_encoded" in x]
 joblib.dump(encoder,"Cat_boost_step1")
 
 X_train_final=Train_df[features_x].to_numpy()
@@ -123,7 +125,7 @@ def f1_eval(y_pred, y_true):
     return 'f1_err', err
 
 study = optuna.create_study(
-study_name="HXGBoostTask1", 
+study_name="HXGBoostTask1ReloadedNoCat", 
 storage="sqlite:///optuna_database.db",
 direction='maximize',
 load_if_exists=True
